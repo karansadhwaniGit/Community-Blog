@@ -1,0 +1,150 @@
+﻿@using CommunityBlog.Models.Group
+@model GroupModel
+@{
+    Layout = "_layout";
+    ViewData["Title"] = "Super Admin-Home";
+    var users = ViewData["Users"];
+}
+<div class="row">
+    <div class="modal fade" id="createGroupModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Create Group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addGroup" method="post" asp-action="CreateGroup" asp-controller="Group">
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input type="text" asp-for="Name" class="form-control" id="firstNameTxt" placeholder="Enter Name For Group" required>
+                            <span asp-validation-for="Name" class="form-text text-danger" style="font-size:12px"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description"></label>
+                            <input type="text" asp-for="Description" class="form-control" id="firstNameTxt" placeholder="Enter Description for groups" required>
+                            <span asp-validation-for="Description" class="form-text text-danger" style="font-size:12px"></span>
+                        </div>
+                        <div>
+                            <div class="input-group mx-1">
+                                <label class="my-2" asp-for="Type"></label>
+                                <br/>
+                                <select asp-for="Type" class="custom-select mx-2 py-1 my-2 px-2">
+                                    <option value="1">Public</option>
+                                    <option value="0">Private</option>
+                                </select>
+                                <span asp-validation-for="Type" class="form-text text-danger" style="font-size:12px"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary primary-color-theme mt-2">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal bd-example-modal-lg" id="modalForLikesAndComments">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle1">Join Requests for group</h5>
+                    <button  type="button" class="close border-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalbodyLikeComment" class="modal-body">
+                    <div id="postDataModal" class="col-md-10 rounded border mx-5 primary-color-theme">
+                    </div>
+                </div>
+                <div class="modal-footer" id="commentsDiv">
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 border">
+        @*chat header*@
+        <div>
+            <div class="d-flex justify-content-between align-items-center border-bottom px-2 py-3 w-100">
+                <div class="w-75">
+                    <h6 class="lead">
+                        Topics
+                        <button onclick="DisplayUserSettings()"  id="setting" class="btn">
+                            <i class="fa fa-gear text-secondary"></i>
+                        </button>
+                    </h6>
+                </div>
+                <div class="mr-3">
+                    <i class="fa fa-search" id="search-icon"></i>
+                </div>
+                <button class="mr-2 btn" id="createGroupIcon">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div id="chatListDiv">
+            <ul id="chatList" class="my-2 px-0">
+                @*CustomDiv from JS*@
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9" style="padding:0!important">
+        <div class="bg-secondary text-white border border-white py-3 px-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex w-50 justify-content-between">
+                    <div id="headerGroupName">
+                        Group Name
+                    </div>
+                    <div id="headerGroupDesc">
+                        Description
+                    </div>
+                </div>
+                <div>
+                    <i class="fa fa-user"></i>
+                    <span id="userCount"></span>
+                </div>
+                <div>
+                    <button class="btn" onclick="LoadAllRequestsOfGroup()" id="requestBtn" style="background-color:white;">Join Requests</button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="col-md-4 mx-2 border">
+                <div class="py-2  primary-color-theme">
+                    <h1 class="lead text-center text-white">
+                        Group Members
+                    </h1>
+                </div>
+                <div id="chatList">
+                    <ul id="groupMembersDiv" class="my-2 px-0 border-bottom">
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4 mx-2 border">
+                <div class="py-2  primary-color-theme">
+                    <h1 class="lead text-center text-white">
+                        Add Members
+                    </h1>
+                </div>
+                <div id="chatList">
+                    <ul id="addMemberChatDiv" class="my-2 px-0 border-bottom">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script type="text/javascript" src="~/js/Groups/indexpage.js"></script>
+    }
+    }
+
